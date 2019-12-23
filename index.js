@@ -17,14 +17,10 @@ document.getElementById("strike-button").addEventListener("click", e => {
 	if (!matchOver) {
 		// select a random run from list of possible runs
 		var run = possibleRuns[Math.floor(Math.random() * possibleRuns.length)];
-		run = run == 8 ? "W" : run; // if run is 8 then mark it as wicket
+		run = run === 8 ? "W" : run; // if run is 8 then mark it as wicket
 
 		// check which team is on strike
-		if (turn == 1) {
-			teamOneScore.push(run); //Update team 1's score
-		} else {
-			teamTwoScore.push(run); //Update team 2's score
-		}
+		(turn === 1) ? teamOneScore.push(run) : teamTwoScore.push(run);
 
 		// Update the button text
 		updateButtonText();
@@ -35,7 +31,7 @@ document.getElementById("strike-button").addEventListener("click", e => {
 
 // Function to assign a random strike to a team at start of the match
 function selectTurn() {
-	turn = [1, 2][Math.floor(Math.random() * 2)];
+	turn = Math.round(Math.random()) + 1;
 }
 
 // Function to update the strike button text
@@ -50,32 +46,29 @@ function updateButtonText() {
 		button.remove(); // delete the strike button from game screen
 
 		// Check if match is a draw
-		if (calculateRuns(teamOneScore) == calculateRuns(teamTwoScore)) {
-			result.textContent = `Its a draw`;
-		} else {
+		result.textContent = (calculateRuns(teamOneScore) === calculateRuns(teamTwoScore)) ? `Its a draw` :
 			// The match has a winner
-			result.textContent = `${
-				calculateRuns(teamOneScore) > calculateRuns(teamTwoScore)
-					? teamOneName
-					: teamTwoName
+			`${
+			calculateRuns(teamOneScore) > calculateRuns(teamTwoScore)
+				? teamOneName
+				: teamTwoName
 			} Wins`;
-		}
+
 	} else {
 		// Match is not over yet
-
 		// Check if strike of first team is over
 		if (
 			(teamOneScore.length == 6 || teamTwoScore.length == 6) &&
 			strikeChange == false
 		) {
 			strikeChange = true; //Mark the strike change flag to true
-			turn = turn == 1 ? 2 : 1; // Alter the turn to other team
+			turn = turn === 1 ? 2 : 1; // Alter the turn to other team
 		}
 
 		// Update the strike button text
 		button.textContent = `Strike (${
-			turn == 1 ? teamOneName : teamTwoName
-		})`;
+			turn === 1 ? teamOneName : teamTwoName
+			})`;
 	}
 }
 
