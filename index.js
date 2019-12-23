@@ -1,6 +1,6 @@
 var possibleRuns = [0, 1, 2, 4, 6, 8]; //All the possible runs in the game
-var teamOneScore = []; // Array to store runs for team 1
-var teamTwoScore = []; // Array to store runs for team 2
+var teamOneRuns = []; // Array to store runs for team 1
+var teamTwoRuns = []; // Array to store runs for team 2
 var teamOneName = "CSK"; //Name of team 1
 var teamTwoName = "Mumbai Indians"; // Name of team 2
 var matchOver = false; // Flag to mark match end
@@ -21,9 +21,9 @@ document.getElementById("strike-button").addEventListener("click", e => {
 
 		// check which team is on strike
 		if (turn == 1) {
-			teamOneScore.push(run); //Update team 1's score
+			teamOneRuns.push(run); //Update team 1's runs
 		} else {
-			teamTwoScore.push(run); //Update team 2's score
+			teamTwoRuns.push(run); //Update team 2's runs
 		}
 
 		// Update the button text
@@ -45,17 +45,17 @@ function updateButtonText() {
 	result.style.visibility = ""; // keep the result hidden until game is over
 
 	// Check if game is over
-	if (teamOneScore.length == 6 && teamTwoScore.length == 6) {
+	if (teamOneRuns.length == 6 && teamTwoRuns.length == 6) {
 		matchOver = true; // mark the matchover flag as true
 		button.remove(); // delete the strike button from game screen
 
 		// Check if match is a draw
-		if (calculateRuns(teamOneScore) == calculateRuns(teamTwoScore)) {
+		if (calculateScore(teamOneRuns) == calculateScore(teamTwoRuns)) {
 			result.textContent = `Its a draw`;
 		} else {
 			// The match has a winner
 			result.textContent = `${
-				calculateRuns(teamOneScore) > calculateRuns(teamTwoScore)
+				calculateScore(teamOneRuns) > calculateScore(teamTwoRuns)
 					? teamOneName
 					: teamTwoName
 			} Wins`;
@@ -65,7 +65,7 @@ function updateButtonText() {
 
 		// Check if strike of first team is over
 		if (
-			(teamOneScore.length == 6 || teamTwoScore.length == 6) &&
+			(teamOneRuns.length == 6 || teamTwoRuns.length == 6) &&
 			strikeChange == false
 		) {
 			strikeChange = true; //Mark the strike change flag to true
@@ -82,12 +82,12 @@ function updateButtonText() {
 //Function to update the score
 function updateScore() {
 	//Update the total score of team 1
-	document.getElementById("team-1-score").textContent = teamOneScore.length
-		? calculateRuns(teamOneScore)
+	document.getElementById("team-1-score").textContent = teamOneRuns.length
+		? calculateScore(teamOneRuns)
 		: 0;
 	//Update the total score of team 2
-	document.getElementById("team-2-score").textContent = teamTwoScore.length
-		? calculateRuns(teamTwoScore)
+	document.getElementById("team-2-score").textContent = teamTwoRuns.length
+		? calculateScore(teamTwoRuns)
 		: 0;
 	updateRuns(); //Update the scoreboard
 }
@@ -100,24 +100,26 @@ function updateNames() {
 
 // Function to update runs on scoreboard
 function updateRuns() {
-	var teamOneRuns = document.getElementById("team-1-round-score").children;
-	var teamTwoRuns = document.getElementById("team-2-round-score").children;
+	var teamOneRunsElement = document.getElementById("team-1-round-runs")
+		.children;
+	var teamTwoRunsElement = document.getElementById("team-2-round-runs")
+		.children;
 
 	// Update runs on scoreboard for team 1
-	teamOneScore.forEach((x, i) => {
-		teamOneRuns[i].textContent = x;
+	teamOneRuns.forEach((x, i) => {
+		teamOneRunsElement[i].textContent = x;
 	});
 
 	// Update runs on scoreboard for team 2
-	teamTwoScore.forEach((x, i) => {
-		teamTwoRuns[i].textContent = x;
+	teamTwoRuns.forEach((x, i) => {
+		teamTwoRunsElement[i].textContent = x;
 	});
 }
 
 // Function to calculate total score
-function calculateRuns(score) {
-	// Change W in score array to 0 and then calculate total score
-	return score
+function calculateScore(runs) {
+	// Change W in runs array to 0 and then calculate total score
+	return runs
 		.map(num => {
 			return num == "W" ? 0 : num;
 		})
