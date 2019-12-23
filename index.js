@@ -19,7 +19,6 @@ var updateButtonText = () => {
 
 	// Check if game is over
 	if (teamOneRuns.length == 6 && teamTwoRuns.length == 6) {
-		matchOver = true; // mark the matchover flag as true
 		button.remove(); // delete the strike button from game screen
 
 		// Check if match is a draw
@@ -79,13 +78,13 @@ var updateRuns = () => {
 		.children;
 
 	// Update runs on scoreboard for team 1
-	teamOneRuns.forEach((x, i) => {
-		teamOneRunsElement[i].textContent = x;
+	teamOneRuns.forEach((run, index) => {
+		teamOneRunsElement[index].textContent = run;
 	});
 
 	// Update runs on scoreboard for team 2
-	teamTwoRuns.forEach((x, i) => {
-		teamTwoRunsElement[i].textContent = x;
+	teamTwoRuns.forEach((run, index) => {
+		teamTwoRunsElement[index].textContent = run;
 	});
 };
 
@@ -105,7 +104,7 @@ updateScore(); // Initialize the score board with 0
 updateNames(); // Update the team names
 
 // Event listener for handling strike button click
-document.getElementById("strike-button").addEventListener("click", e => {
+document.getElementById("strike-button").addEventListener("click", () => {
 	// select a random run from list of possible runs
 	var run = possibleRuns[Math.floor(Math.random() * possibleRuns.length)];
 	run = run == 8 ? "W" : run; // if run is 8 then mark it as wicket
