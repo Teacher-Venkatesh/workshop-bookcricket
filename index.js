@@ -3,8 +3,6 @@ var teamOneScore = []; // Array to store runs for team 1
 var teamTwoScore = []; // Array to store runs for team 2
 var teamOneName = "CSK"; //Name of team 1
 var teamTwoName = "Mumbai Indians"; // Name of team 2
-var matchOver = false; // Flag to mark match end
-var strikeChange = false; // Flag to mark the change of strike
 var turn; // strike deciding variable
 selectTurn(); // decide strike of team
 updateButtonText(); // update the text of button according to strike
@@ -13,20 +11,18 @@ updateNames(); // Update the team names
 
 // Event listener for handling strike button click
 document.getElementById("strike-button").addEventListener("click", e => {
-	// check if match is not over
-	if (!matchOver) {
-		// select a random run from list of possible runs
-		var run = possibleRuns[Math.floor(Math.random() * possibleRuns.length)];
-		run = run === 8 ? "W" : run; // if run is 8 then mark it as wicket
+	// select a random run from list of possible runs
+	var run = possibleRuns[Math.floor(Math.random() * possibleRuns.length)];
+	run = run === 8 ? "W" : run; // if run is 8 then mark it as wicket
 
-		// check which team is on strike
-		(turn === 1) ? teamOneScore.push(run) : teamTwoScore.push(run);
+	// check which team is on strike
+	(turn === 1) ? teamOneScore.push(run) : teamTwoScore.push(run);
 
-		// Update the button text
-		updateButtonText();
-		// Update the scoreboard
-		updateScore();
-	}
+	// Update the button text
+	updateButtonText();
+	// Update the scoreboard
+	updateScore();
+
 });
 
 // Function to assign a random strike to a team at start of the match
@@ -42,7 +38,6 @@ function updateButtonText() {
 
 	// Check if game is over
 	if (teamOneScore.length == 6 && teamTwoScore.length == 6) {
-		matchOver = true; // mark the matchover flag as true
 		button.remove(); // delete the strike button from game screen
 
 		// Check if match is a draw
@@ -55,15 +50,8 @@ function updateButtonText() {
 			} Wins`;
 
 	} else {
-		// Match is not over yet
-		// Check if strike of first team is over
-		if (
-			(teamOneScore.length == 6 || teamTwoScore.length == 6) &&
-			strikeChange == false
-		) {
-			strikeChange = true; //Mark the strike change flag to true
-			turn = turn === 1 ? 2 : 1; // Alter the turn to other team
-		}
+		// Check if strike of a team is over
+		turn = teamOneScore.length === 6 ? 2 : (teamTwoScore.length === 6) ? 1 : turn;
 
 		// Update the strike button text
 		button.textContent = `Strike (${
