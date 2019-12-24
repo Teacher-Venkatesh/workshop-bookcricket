@@ -48,7 +48,7 @@ body {
 .score > span {
 	margin: 0 5px;
 }
-.round-score {
+.round-runs {
 	font-size: xx-large;
 	width: 200px;
 	justify-content: space-evenly;
