@@ -81,3 +81,8 @@ body {
 	-webkit-background-clip: text;
 	-webkit-text-fill-color: transparent;
 }
+
+#confetti-canvas {
+	position: absolute;
+	z-index: -1;
+}
