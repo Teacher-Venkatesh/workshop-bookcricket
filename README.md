@@ -21,3 +21,7 @@
     2.3 Invoke function `updateScore` to set and display the score as 0 for both the teams.
 
     2.4 Invoke function `updateNames` to set and display the name of the teams.
+
+---
+
+## [Demo link](https://prograd-labs.github.io/bookcricket/)

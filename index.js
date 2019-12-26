@@ -13,12 +13,21 @@ var team2 = {
 };
 
 var turn; // strike deciding variable
+var confetti;
 
 window.addEventListener("load", () => {
 	selectTurn(); // Decide strike of team
 	updateButtonText(); // Update the text of button according to strike
 	updateScore(); // Initialize the score board with 0
 	updateNames(); // Update the team names
+
+	// Confetti Config
+	var confettiSettings = {
+		target: "confetti-canvas",
+		props: ["square", "triangle", "line"],
+		clock: 70
+	};
+	confetti = new ConfettiGenerator(confettiSettings);
 });
 
 // Event listener for handling strike button click
@@ -63,6 +72,10 @@ var updateButtonText = () => {
 				? `Its a draw`
 				: // The match has a winner
 				  `${team1.score > team2.score ? team1.name : team2.name} Wins`;
+
+		//Display confetti
+		confetti.render();
+		document.getElementById("confetti-canvas").style.zIndex = "1";
 	} else {
 		// Check if strike of a team is over
 		turn = team1.runs.length === 6 ? 2 : team2.runs.length === 6 ? 1 : turn;
